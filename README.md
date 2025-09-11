@@ -18,22 +18,22 @@ Frontend: HTML, CSS
 Design: Custom CSS & Bootstrap for responsiveness
 
 ## 🚀 Installation
-bash
-# 1. Clone the repository
+```bash
+#1. Clone the repository
 git clone https://github.com/spavan2708/spavan2708.github.io.git
 cd spavan2708.gitbuh.io
 
-# 2. Create a virtual environment (recommended)
+#2. Create a virtual environment (recommended)
 python -m venv venv
 venv\Scripts\activate.bat      # Windows
 source venv/bin/activate       # macOS/Linux
 
-# 3. Install dependencies
+#3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the app
+#4. Run the app
 uvicorn main:app --reload
-
+```
 ## 🎮 Usage
 
 - Open (https://spavan2708.github.io/signup.html) in your browser.

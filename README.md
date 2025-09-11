@@ -3,7 +3,7 @@
 A website made using HTML and CSS for the club recruitment task of IEEE-RAS On Campus @ VIT Chennai
 
 ![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
-![image](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=html&logoColor=white)
+![image](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 
 ## 📌 Features
 

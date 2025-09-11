@@ -100,7 +100,7 @@
     box-shadow: 0 12px 30px rgba(0,0,0,0.07);
     color: #333;
   }
-  h1 {
+  h1, h2 {
     font-weight: 700;
     color: #007d7d;
     margin-bottom: 1.5rem;
@@ -135,7 +135,7 @@
     font-size: 1rem;
     margin-bottom: 0.3rem;
   }
-  input, textarea {
+  input, textarea, select {
     padding: 0.7rem 1rem;
     font-size: 1rem;
     border-radius: 8px;
@@ -143,7 +143,7 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     resize: vertical;
   }
-  input:focus, textarea:focus {
+  input:focus, textarea:focus, select:focus {
     border-color: #007d7d;
     outline: none;
     background: #fff;
@@ -151,7 +151,7 @@
   textarea {
     min-height: 90px;
   }
-  button.pay-btn {
+  button.pay-btn, button.buy-btn {
     background-color: #007d7d;
     color: white;
     padding: 1rem 0;
@@ -164,17 +164,9 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     margin-top: 1.5rem;
   }
-  button.pay-btn:hover {
+  button.pay-btn:hover, button.buy-btn:hover {
     background-color: #005353;
     box-shadow: 0 8px 28px rgba(0,83,83,0.6);
-  }
-  footer {
-    margin-top: 5rem;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-    background: #fafafa;
   }
   /* Responsive */
   @media (max-width: 700px) {
@@ -216,6 +208,25 @@
   </nav>
   <main>
     <h1>Checkout</h1>
+
+    <!-- Product selection for Buy Now -->
+    <section style="max-width:600px; margin: 0 auto 2rem auto;">
+      <h2>Buy Now</h2>
+      <label for="sizeSelect">Select Size</label>
+      <select id="sizeSelect" required>
+        <option value="" disabled selected>Select size</option>
+        <option value="S">Small</option>
+        <option value="M">Medium</option>
+        <option value="L">Large</option>
+        <option value="XL">Extra Large</option>
+      </select>
+
+      <label for="quantityInput">Quantity</label>
+      <input type="number" id="quantityInput" min="1" value="1" required />
+
+      <button class="buy-btn" onclick="buyNow()">Buy Now</button>
+    </section>
+
     <table>
       <thead>
         <tr>
@@ -246,6 +257,7 @@
         </tr>
       </tfoot>
     </table>
+
     <form id="deliveryForm" autocomplete="off">
       <label for="custName">Name</label>
       <input type="text" id="custName" name="custName" required />
@@ -290,15 +302,6 @@
       userDropdown.style.display = 'none';
     }
   }
-  window.onload = function() {
-    updateUserUI();
-    loadOrderItems();
-    document.getElementById('deliveryForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert('Payment will shortly be worked on!');
-      e.target.reset();
-    });
-  };
 
   function loadOrderItems() {
     const orderItemsTbody = document.getElementById('orderItems');
@@ -319,15 +322,74 @@
         </tr>
       `;
     });
-    
+
     const gst = subtotal * 0.18;
     const deliveryCharge = 50;
     const grandTotal = subtotal + gst + deliveryCharge;
-    
+
     document.getElementById('subtotalAmt').textContent = '₹' + subtotal.toFixed(2);
     document.getElementById('gstAmt').textContent = '₹' + gst.toFixed(2);
     document.getElementById('grandTotalAmt').textContent = '₹' + grandTotal.toFixed(2);
   }
+
+  function buyNow() {
+    const sizeSelect = document.getElementById('sizeSelect');
+    const quantityInput = document.getElementById('quantityInput');
+
+    const size = sizeSelect.value;
+    const quantity = parseInt(quantityInput.value);
+
+    if (!size) {
+      alert('Please select a size.');
+      return;
+    }
+    if (!quantity || quantity < 1) {
+      alert('Please enter a valid quantity.');
+      return;
+    }
+
+    const item = {
+      id: 123,  // unique id for this product
+      name: 'Furia Classic T-Shirt',
+      size: size,
+      price: 799,
+      quantity: quantity,
+    };
+
+    let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
+
+    // Check if item with same id & size already exists in cart
+    const existingItemIndex = cart.findIndex(
+      cartItem => cartItem.id === item.id && cartItem.size === item.size
+    );
+
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += item.quantity;
+    } else {
+      cart.push(item);
+    }
+
+    localStorage.setItem('furiaCart', JSON.stringify(cart));
+
+    loadOrderItems();
+
+    alert('Item added to cart!');
+
+    // Optionally clear selection (not required)
+    // sizeSelect.value = '';
+    // quantityInput.value = 1;
+  }
+
+  window.onload = function() {
+    updateUserUI();
+    loadOrderItems();
+    document.getElementById('deliveryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Payment will shortly be worked on!');
+      e.target.reset();
+    });
+  };
 </script>
 </body>
 </html>
+

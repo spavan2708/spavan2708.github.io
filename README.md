@@ -1,2 +1,47 @@
-# spavan2708.github.io
-Furia is a minimalist-inspired sportswear and lifestyle clothing brand focused on clean aesthetics, high functionality, and performance-driven design. This repository contains the digital backbone of the brand, including website source code, design assets, product catalogs, and integration tools.
+# FURIA CLOTHING
+
+A website made using HTML and CSS for the club recruitment task of IEEE-RAS On Campus @ VIT Chennai
+
+![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+![image](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=html&logoColor=white)
+
+## 📌 Features
+
+- 🖥️ Multi-page responsive layout (Home, Shop, About, Contact)
+- 📱 Optimized for desktop and mobile devices
+- 🔍 Product detail view with descriptions and links
+- ✨ Minimalist user-friendly navigation
+
+## ⚙️ Tech Stack
+Frontend: HTML, CSS
+
+Design: Custom CSS & Bootstrap for responsiveness
+
+## 🚀 Installation
+bash
+# 1. Clone the repository
+git clone https://github.com/spavan2708/spavan2708.github.io.git
+cd spavan2708.gitbuh.io
+
+# 2. Create a virtual environment (recommended)
+python -m venv venv
+venv\Scripts\activate.bat      # Windows
+source venv/bin/activate       # macOS/Linux
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the app
+uvicorn main:app --reload
+
+## 🎮 Usage
+
+- Open (https://spavan2708.github.io/signup.html) in your browser.
+- Browse the Home page to explore the brand.
+- Visit the Shop to view clothing collections.
+- Check About to learn more about Furia.
+- Navigate to Contact to reach out or submit queries.
+
+## 📜 License
+This project is licensed under the [MIT License](./LICENSE).
+

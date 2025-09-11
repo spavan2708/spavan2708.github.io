@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Furia | Home</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      color: #222;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #111;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      position: relative;
+    }
+    .nav-links a {
+      color: #222;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: color 0.3s, background-color 0.3s;
+    }
+    .nav-links a.active {
+      background-color: #007d7d;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(0,125,125,0.35);
+    }
+    .nav-links a:hover {
+      background-color: #f0f0f0;
+      color: #007d7d;
+      cursor: pointer;
+    }
+    .user-dropdown {
+      display:none;
+      position: relative;
+      margin-left: 1.2rem;
+      z-index: 100;
+    }
+    .user-btn {
+      background: #e6f2f2;
+      color: #007d7d;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .logout-box {
+      display: none;
+      position: absolute;
+      right: 0;
+      min-width: 116px;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.20);
+      border-radius: 8px;
+      margin-top: 6px;
+      z-index: 100;
+      padding: 0.6rem 1.2rem;
+    }
+    .logout-box button {
+      background: none;
+      color: #c0392b;
+      padding: 0;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      max-width: 980px;
+      margin: 3rem auto 5rem auto;
+      padding: 0 1rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+    }
+    main img.hero {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+      margin-bottom: 2rem;
+    }
+    section.category-section {
+      margin-top: 4rem;
+    }
+    section.category-section h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: #007d7d;
+      margin-bottom: 1.5rem;
+      padding-left: 10px;
+      border-left: 6px solid #007d7d;
+    }
+    .products-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      grid-auto-rows: minmax(380px, auto);
+    }
+    .product-item {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      padding-bottom: 1rem;
+      text-align: center;
+    }
+    .product-item:hover {
+      box-shadow: 0 16px 55px rgba(0,0,0,0.12);
+    }
+    .product-img {
+      height: 230px;
+      width: 100%;
+      object-fit: contain;
+      background: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      border-radius: 16px 16px 0 0;
+    }
+    .product-info {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #004d4d;
+      margin-bottom: 0.4rem;
+    }
+    .product-price {
+      font-weight: 700;
+      color: #007d7d;
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+    .product-desc {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.3;
+      max-height: 5.2em;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .product-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+      margin-top: auto;
+    }
+    .product-controls select {
+      padding: 0.3rem 0.5rem;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
+      font-weight: 600;
+      font-size: 0.85rem;
+      background: #f9f9f9;
+      cursor: pointer;
+      flex-grow: 0;
+      min-width: 60px;
+    }
+    .product-controls button,
+    .buy-now-btn {
+      background: #007d7d;
+      border: none;
+      color: white;
+      padding: 0.35rem 0.7rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 125, 125, 0.35);
+      transition: background-color 0.3s;
+      flex-grow: 1;
+      max-width: 110px;
+      text-align: center;
+      display: inline-block;
+    }
+    .product-controls button:hover,
+    .buy-now-btn:hover {
+      background: #005353;
+    }
+    footer {
+      margin-top: 5rem;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      background: #fafafa;
+    }
+    @media (max-width: 900px) {
+      .products-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 580px) {
+      .products-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script>
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage !== 'login.html' && currentPage !== 'signup.html') {
+      if (!localStorage.getItem('furiaUser') || localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Furia</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" aria-current="page" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html">Cart</a>
+      <span class="user-dropdown" id="userDropdown">
+        <button class="user-btn" id="userBtn"></button>
+        <span class="logout-box" id="logoutBox">
+          <button id="logoutBtn">Log Out</button>
+        </span>
+      </span>
+    </div>
+  </nav>
+  <main>
+    <!-- TOPS -->
+    <section class="category-section" id="tops-section">
+      <h2>TOPS</h2>
+      <div class="products-row" id="tops-products">
+        <div class="product-item" data-id="oversized-tee" data-name="Oversized Tee" data-price="799">
+          <img src="images/Oversized Tee.webp" alt="Oversized Tee" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Oversized Tee</div>
+            <div class="product-price">₹799</div>
+            <div class="product-desc">Super combed cotton, 240 GSM and 15 timeless colors.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Oversized Tee">
+                <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="black-half-zip-polo" data-name="Black Half Zip Polo" data-price="999">
+          <img src="images/Black Half Zip Polo.webp" alt="Black Half Zip Polo" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Black Half Zip Polo</div>
+            <div class="product-price">₹999</div>
+            <div class="product-desc">Breathable fabric, versatile casual style.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Black Half Zip Polo">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="revive-half-zip-sweatshirt" data-name="Revive Half Zip Sweatshirt" data-price="1299">
+          <img src="images/Revive Half Zip Sweatshirt.webp" alt="Revive Half Zip Sweatshirt" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Revive Half Zip Sweatshirt</div>
+            <div class="product-price">₹1299</div>
+            <div class="product-desc">Cozy warmth, classic black design.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Revive Half Zip Sweatshirt">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- BOTTOMS -->
+    <section class="category-section" id="bottoms-section">
+      <h2>BOTTOMS</h2>
+      <div class="products-row" id="bottoms-products">
+        <div class="product-item" data-id="revive-trousers" data-name="Revive Trousers" data-price="999">
+          <img src="images/Revive Trousers.webp" alt="Revive Trousers" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Revive Trousers</div>
+            <div class="product-price">₹999</div>
+            <div class="product-desc">Comfortable, slim fit black trousers.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Revive Trousers">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="revive-lounge-pants" data-name="Revive Lounge Pants" data-price="1299">
+          <img src="images/Revive Lounge Pants.webp" alt="Revive Lounge Pants" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Revive Lounge Pants</div>
+            <div class="product-price">₹1299</div>
+            <div class="product-desc">Soft, breathable all-day comfort.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Revive Lounge Pants">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="revive-cargo-joggers" data-name="Revive Cargo Joggers" data-price="1299">
+          <img src="images/Revive Cargo Joggers.webp" alt="Revive Cargo Joggers" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Revive Cargo Joggers</div>
+            <div class="product-price">₹1299</div>
+            <div class="product-desc">Tapered fit, multiple pockets, durable fabric.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Revive Cargo Joggers">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ACCESSORIES -->
+    <section class="category-section" id="accessories-section">
+      <h2>ACCESSORIES</h2>
+      <div class="products-row" id="accessories-products">
+        <div class="product-item" data-id="dual-tone-twill-cap" data-name="Black Grey Dual Tone Twill Cap" data-price="599">
+          <img src="images/Black Grey Dual Tone Twill Cap.webp" alt="Black Grey Dual Tone Twill Cap" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Black Grey Dual Tone Twill Cap</div>
+            <div class="product-price">₹599</div>
+            <div class="product-desc">Classic and versatile twill cap.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Dual Tone Twill Cap">
+                <option>One Size</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="classic-black-card-holder" data-name="Classic Black Card Holder" data-price="599">
+          <img src="images/Classic Black Card Holder.webp" alt="Classic Black Card Holder" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Classic Black Card Holder</div>
+            <div class="product-price">₹599</div>
+            <div class="product-desc">Sleek and minimal card holder.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Black Card Holder">
+                <option>One Size</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="product-item" data-id="void-heavy-duty-tote-bag" data-name="Void Heavy Duty Tote Bag" data-price="1299">
+          <img src="images/Void Heavy Duty Tote Bag.webp" alt="Void Heavy Duty Tote Bag" class="product-img" />
+          <div class="product-info">
+            <div class="product-name">Void Heavy Duty Tote Bag</div>
+            <div class="product-price">₹1299</div>
+            <div class="product-desc">Durable and spacious tote bag.</div>
+            <div class="product-controls">
+              <select aria-label="Select size for Heavy Duty Tote Bag">
+                <option>One Size</option>
+              </select>
+              <button class="add-to-cart">Add to Cart</button>
+              <a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>&copy; 2025 Furia. All rights reserved.</footer>
+  <script>
+    function updateUserUI() {
+      const user = JSON.parse(localStorage.getItem('furiaUser') || 'null');
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const userDropdown = document.getElementById('userDropdown');
+      const userBtn = document.getElementById('userBtn');
+      const logoutBox = document.getElementById('logoutBox');
+      const signupLink = document.getElementById('signupLink');
+      const loginLink = document.getElementById('loginLink');
+      if (user && loggedIn) {
+        signupLink.style.display = 'none';
+        loginLink.style.display = 'none';
+        userDropdown.style.display = 'inline-block';
+        userBtn.textContent = user.name.split(' ')[0];
+        userBtn.onclick = (e) => {
+          e.stopPropagation();
+          logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+        };
+        document.body.addEventListener('click', () => logoutBox.style.display = 'none');
+        document.getElementById('logoutBtn').onclick = () => {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = "login.html";
+        };
+      } else {
+        signupLink.style.display = '';
+        loginLink.style.display = '';
+        userDropdown.style.display = 'none';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      updateUserUI();
+
+      // Add to Cart functionality
+      const addToCartButtons = document.querySelectorAll('.add-to-cart');
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const productItem = button.closest('.product-item');
+          const productId = productItem.getAttribute('data-id');
+          const productName = productItem.getAttribute('data-name');
+          const productPrice = parseFloat(productItem.getAttribute('data-price'));
+          const sizeSelect = productItem.querySelector('select');
+          const selectedSize = sizeSelect ? sizeSelect.value : '';
+
+          let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
+
+          let existingIndex = cart.findIndex(item => item.id === productId && item.size === selectedSize);
+
+          if (existingIndex !== -1) {
+            cart[existingIndex].quantity += 1;
+          } else {
+            cart.push({ id: productId, name: productName, price: productPrice, size: selectedSize, quantity: 1 });
+          }
+
+          localStorage.setItem('furiaCart', JSON.stringify(cart));
+          alert(`Added "${productName}" (Size: ${selectedSize}) to cart!`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

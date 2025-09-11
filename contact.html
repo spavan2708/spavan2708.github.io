@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Furia | Contact Us</title>
+  <style>
+    /* Your existing site styles here (same as index.html) */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      color: #222;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #111;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      position: relative;
+    }
+    .nav-links a {
+      color: #222;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: color 0.3s, background-color 0.3s;
+    }
+    .nav-links a.active {
+      background-color: #007d7d;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(0,125,125,0.35);
+    }
+    .nav-links a:hover {
+      background-color: #f0f0f0;
+      color: #007d7d;
+      cursor: pointer;
+    }
+    .user-dropdown {
+      display:none;
+      position: relative;
+      margin-left: 1.2rem;
+      z-index: 100;
+    }
+    .user-btn {
+      background: #e6f2f2;
+      color: #007d7d;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .logout-box {
+      display: none;
+      position: absolute;
+      right: 0;
+      min-width: 116px;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.20);
+      border-radius: 8px;
+      margin-top: 6px;
+      z-index: 100;
+      padding: 0.6rem 1.2rem;
+    }
+    .logout-box button {
+      background: none;
+      color: #c0392b;
+      padding: 0;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      max-width: 980px;
+      margin: 3rem auto 5rem auto;
+      padding: 2rem 1rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* Form box */
+    .form-box {
+      flex: 1 1 380px;
+      max-width: 480px;
+    }
+    .form-box h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #007d7d;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #444;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 0.65rem 0.95rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #dcdcdc;
+      margin-bottom: 1.2rem;
+      resize: vertical;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    form input:focus, form textarea:focus {
+      border-color: #007d7d;
+      outline: none;
+      background: #fff;
+    }
+    form textarea {
+      min-height: 120px;
+    }
+    form button {
+      background-color: #007d7d;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85rem;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 125, 125, 0.35);
+      transition: background-color 0.3s;
+    }
+    form button:hover {
+      background-color: #005353;
+    }
+    /* Info box */
+    .info-box {
+      flex: 1 1 300px;
+      max-width: 360px;
+    }
+    .info-box h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #007d7d;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .info-item {
+      background: #f5f7fb;
+      border-radius: 14px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+      text-align: left;
+    }
+    .info-item:last-child {
+      margin-bottom: 0;
+    }
+    .info-icon {
+      font-size: 1.5rem;
+      color: #007d7d;
+      min-width: 2rem;
+      text-align: center;
+      line-height: 1;
+    }
+    .info-text {
+      line-height: 1.3;
+    }
+    footer {
+      margin-top: 5rem;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      background: #fafafa;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        padding: 2rem 1rem 3rem;
+      }
+      .form-box, .info-box {
+        max-width: 100%;
+        flex: 1 1 auto;
+      }
+    }
+  </style>
+  <script>
+    const currentPage = window.location.pathname.split("/").pop();
+    if (currentPage !== "login.html" && currentPage !== "signup.html") {
+      if (!localStorage.getItem("furiaUser") || localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "login.html";
+      }
+    }
+  </script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Furia</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html">Cart</a>
+      <span class="user-dropdown" id="userDropdown">
+        <button class="user-btn" id="userBtn"></button>
+        <span class="logout-box" id="logoutBox">
+          <button id="logoutBtn">Log Out</button>
+        </span>
+      </span>
+    </div>
+  </nav>
+  <main>
+    <div class="form-box">
+      <h2>Get In Touch</h2>
+      <form id="contactForm" autocomplete="off" spellcheck="false">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required />
+        
+        <label for="emailAddress">Email Address</label>
+        <input type="email" id="emailAddress" name="emailAddress" required />
+        
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" required />
+        
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+        
+        <button type="submit">Send Message</button>
+        <div id="formMsg" style="margin-top:1rem;font-weight:600;color:green;"></div>
+      </form>
+    </div>
+    <div class="info-box">
+      <h2>Contact Information</h2>
+      <div class="info-item">
+        <span class="info-icon">📧</span>
+        <div class="info-text">
+          <b>Email</b>
+          <div>furia@company.in</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📞</span>
+        <div class="info-text">
+          <b>Phone</b>
+          <div>+91 91420 85674</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📍</span>
+        <div class="info-text">
+          <b>Address</b>
+          <div>3rd Avenue, Fashion Block<br>Chennai, India</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">⏰</span>
+        <div class="info-text">
+          <b>Business Hours</b>
+          <div>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    &copy; 2025 Furia. All rights reserved.
+  </footer>
+  <script>
+    function updateUserUI() {
+      const user = JSON.parse(localStorage.getItem("furiaUser") || "null");
+      const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const userDropdown = document.getElementById("userDropdown");
+      const userBtn = document.getElementById("userBtn");
+      const logoutBox = document.getElementById("logoutBox");
+      const signupLink = document.getElementById("signupLink");
+      const loginLink = document.getElementById("loginLink");
+      if (user && loggedIn) {
+        signupLink.style.display = "none";
+        loginLink.style.display = "none";
+        userDropdown.style.display = "inline-block";
+        userBtn.textContent = user.name.split(" ")[0];
+        userBtn.onclick = (e) => {
+          e.stopPropagation();
+          logoutBox.style.display =
+            logoutBox.style.display === "block" ? "none" : "block";
+        };
+        document.body.addEventListener("click", () => {
+          logoutBox.style.display = "none";
+        });
+        document.getElementById("logoutBtn").onclick = () => {
+          localStorage.removeItem("isLoggedIn");
+          window.location.href = "login.html";
+        };
+      } else {
+        signupLink.style.display = "";
+        loginLink.style.display = "";
+        userDropdown.style.display = "none";
+      }
+    }
+    window.onload = updateUserUI;
+
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      this.reset();
+      const msg = document.getElementById("formMsg");
+      msg.textContent = "Thank you! Your message has been sent.";
+      setTimeout(() => {
+        msg.textContent = "";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
+

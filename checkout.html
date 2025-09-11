@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Furia | Checkout</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #fafafa;
+    margin: 0;
+    color: #222;
+  }
+  nav.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #111;
+    letter-spacing: 0.05em;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    position: relative;
+  }
+  .nav-links a {
+    color: #222;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    transition: color 0.3s, background-color 0.3s;
+  }
+  .nav-links a.active {
+    background-color: #007d7d;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 5px 15px rgba(0,125,125,0.35);
+  }
+  .nav-links a:hover {
+    background-color: #f0f0f0;
+    color: #007d7d;
+    cursor: pointer;
+  }
+  .user-dropdown {
+    display:none;
+    position: relative;
+    margin-left: 1.2rem;
+    z-index: 100;
+  }
+  .user-btn {
+    background: #e6f2f2;
+    color: #007d7d;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 0.3rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .logout-box {
+    display: none;
+    position: absolute;
+    right: 0;
+    min-width: 116px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.20);
+    border-radius: 8px;
+    margin-top: 6px;
+    z-index: 100;
+    padding: 0.6rem 1.2rem;
+  }
+  .logout-box button {
+    background: none;
+    color: #c0392b;
+    padding: 0;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  main {
+    max-width: 900px;
+    margin: 3rem auto 5rem auto;
+    padding: 2rem 1rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+    color: #333;
+  }
+  h1 {
+    font-weight: 700;
+    color: #007d7d;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+  th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 0.8rem;
+    text-align: left;
+  }
+  th {
+    background-color: #f4f4f4;
+  }
+  .total-row td {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+  input, textarea {
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    resize: vertical;
+  }
+  input:focus, textarea:focus {
+    border-color: #007d7d;
+    outline: none;
+    background: #fff;
+  }
+  textarea {
+    min-height: 90px;
+  }
+  button.pay-btn {
+    background-color: #007d7d;
+    color: white;
+    padding: 1rem 0;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,125,125,0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 1.5rem;
+  }
+  button.pay-btn:hover {
+    background-color: #005353;
+    box-shadow: 0 8px 28px rgba(0,83,83,0.6);
+  }
+  footer {
+    margin-top: 5rem;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    background: #fafafa;
+  }
+  /* Responsive */
+  @media (max-width: 700px) {
+    main {
+      padding: 2rem 1rem;
+    }
+    form {
+      width: 100%;
+    }
+  }
+</style>
+<script>
+  const currentPage = window.location.pathname.split('/').pop();
+  if (currentPage !== 'login.html' && currentPage !== 'signup.html') {
+    if (!localStorage.getItem('furiaUser') || localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  }
+</script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Furia</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html">Cart</a>
+      <span class="user-dropdown" id="userDropdown">
+        <button class="user-btn" id="userBtn"></button>
+        <span class="logout-box" id="logoutBox">
+          <button id="logoutBtn">Log Out</button>
+        </span>
+      </span>
+    </div>
+  </nav>
+  <main>
+    <h1>Checkout</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Size</th>
+          <th>Quantity</th>
+          <th>Unit Price (₹)</th>
+          <th>Total (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="orderItems"></tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="4">Subtotal</td>
+          <td id="subtotalAmt">₹0.00</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="4">GST (18%)</td>
+          <td id="gstAmt">₹0.00</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="4">Delivery Charge</td>
+          <td>₹50.00</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="4">Grand Total</td>
+          <td id="grandTotalAmt">₹0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+    <form id="deliveryForm" autocomplete="off">
+      <label for="custName">Name</label>
+      <input type="text" id="custName" name="custName" required />
+
+      <label for="custContact">Contact Number</label>
+      <input type="tel" id="custContact" name="custContact" required pattern="[0-9+ ]{7,15}" placeholder="+91 98765 43210" />
+
+      <label for="custAddress">Delivery Address</label>
+      <textarea id="custAddress" name="custAddress" required></textarea>
+
+      <button type="submit" class="pay-btn">Pay</button>
+    </form>
+  </main>
+  <footer>&copy; 2025 Furia. All rights reserved.</footer>
+
+<script>
+  function updateUserUI() {
+    const user = JSON.parse(localStorage.getItem('furiaUser') || 'null');
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userDropdown = document.getElementById('userDropdown');
+    const userBtn = document.getElementById('userBtn');
+    const logoutBox = document.getElementById('logoutBox');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+    if (user && loggedIn) {
+      signupLink.style.display = 'none';
+      loginLink.style.display = 'none';
+      userDropdown.style.display = 'inline-block';
+      userBtn.textContent = user.name.split(' ')[0];
+      userBtn.onclick = (e) => {
+        e.stopPropagation();
+        logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+      };
+      document.body.addEventListener('click', () => logoutBox.style.display = 'none');
+      document.getElementById('logoutBtn').onclick = () => {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = "login.html";
+      };
+    } else {
+      signupLink.style.display = '';
+      loginLink.style.display = '';
+      userDropdown.style.display = 'none';
+    }
+  }
+  window.onload = function() {
+    updateUserUI();
+    loadOrderItems();
+    document.getElementById('deliveryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Payment will shortly be worked on!');
+      e.target.reset();
+    });
+  };
+
+  function loadOrderItems() {
+    const orderItemsTbody = document.getElementById('orderItems');
+    let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
+    orderItemsTbody.innerHTML = '';
+    let subtotal = 0;
+
+    cart.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+      orderItemsTbody.innerHTML += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.size}</td>
+          <td>${item.quantity}</td>
+          <td>₹${item.price.toFixed(2)}</td>
+          <td>₹${itemTotal.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+    
+    const gst = subtotal * 0.18;
+    const deliveryCharge = 50;
+    const grandTotal = subtotal + gst + deliveryCharge;
+    
+    document.getElementById('subtotalAmt').textContent = '₹' + subtotal.toFixed(2);
+    document.getElementById('gstAmt').textContent = '₹' + gst.toFixed(2);
+    document.getElementById('grandTotalAmt').textContent = '₹' + grandTotal.toFixed(2);
+  }
+</script>
+</body>
+</html>

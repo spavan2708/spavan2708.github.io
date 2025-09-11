@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Furia | Cart</title>
+  <style>
+    /* Existing styles */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      color: #222;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      align-items: center;
+      z-index: 1000;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: #004d4d;
+    }
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: color 0.3s, background-color 0.3s;
+    }
+    nav a:hover {
+      color: #007d7d;
+      background: #e6f2f2;
+    }
+    nav a.active {
+      font-weight: 700;
+      background-color: #007d7d;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 125, 125, 0.35);
+    }
+    main {
+      max-width: 980px;
+      margin: 3rem auto 5rem auto;
+      padding: 2rem 1rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+      min-height: 400px;
+    }
+    h1 {
+      font-weight: 700;
+      color: #007d7d;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    button.delete-btn {
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button.delete-btn:hover {
+      background: #e74c3c;
+    }
+    .empty-cart {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #555;
+      margin-top: 3rem;
+    }
+    .grand-total-container {
+      margin-top: 1.5rem;
+      text-align: right;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #007d7d;
+    }
+    button.pay-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      background-color: #007d7d;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,125,125,0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+      float: right;
+    }
+    button.pay-btn:hover {
+      background-color: #005353;
+      box-shadow: 0 8px 28px rgba(0,83,83,0.6);
+    }
+    /* NEW styles for Buy Now link buttons */
+    a.buy-now-btn {
+      display: inline-block;
+      background: #007d7d;
+      color: white;
+      padding: 0.35rem 0.7rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 125, 125, 0.35);
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      max-width: 110px;
+      text-align: center;
+    }
+    a.buy-now-btn:hover {
+      background: #005353;
+    }
+    footer {
+      margin-top: 5rem;
+      padding: 1.5rem 0;
+      text-align: center; /* Centered footer text */
+      font-size: 0.9rem;
+      color: #666;
+      background: #fafafa;
+      clear: both;
+    }
+  </style>
+
+  <script>
+    // Redirect to login if not authenticated - excludes login and signup pages
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage !== 'login.html' && currentPage !== 'signup.html') {
+      if (!localStorage.getItem('furiaUser') || localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</head>
+<body>
+<header>
+  <div class="logo">Furia</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="signup.html" id="signupLink">Sign Up</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="cart.html" class="active">Cart</a>
+    <span class="user-dropdown" id="userDropdown" style="display:none; position:relative; margin-left:1.2rem; z-index:100;">
+      <button id="userBtn" class="user-btn" style="background:#e6f2f2; color:#007d7d; border:none; border-radius:6px; font-weight:600; padding:0.3rem 1rem; font-size:1rem; cursor:pointer;"></button>
+      <span id="logoutBox" class="logout-box" style="display:none; position:absolute; right:0; min-width:116px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,0.2); border-radius:8px; margin-top:6px; padding:0.6rem 1.2rem; z-index:100;">
+        <button id="logoutBtn" style="background:none; color:#c0392b; border:none; font-size:1rem; font-weight:600; cursor:pointer; padding:0;">Log Out</button>
+      </span>
+    </span>
+  </nav>
+</header>
+<main>
+  <h1>Your Shopping Cart</h1>
+  <div id="cart-container"></div>
+  <div class="grand-total-container" id="grand-total-container"></div>
+  <button class="pay-btn" id="pay-button" style="display:none;">Pay Now</button>
+</main>
+<footer>
+  &copy; 2025 Furia. All rights reserved.
+</footer>
+
+<script>
+  function updateUserUI() {
+    const user = JSON.parse(localStorage.getItem('furiaUser') || 'null');
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userDropdown = document.getElementById('userDropdown');
+    const userBtn = document.getElementById('userBtn');
+    const logoutBox = document.getElementById('logoutBox');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+
+    if (user && loggedIn) {
+      signupLink.style.display = 'none';
+      loginLink.style.display = 'none';
+      userDropdown.style.display = 'inline-block';
+      userBtn.textContent = user.name.split(' ')[0];
+      userBtn.onclick = (e) => {
+        e.stopPropagation();
+        logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+      };
+      document.body.addEventListener('click', () => logoutBox.style.display = 'none');
+      document.getElementById('logoutBtn').onclick = () => {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = "login.html";
+      };
+    } else {
+      signupLink.style.display = '';
+      loginLink.style.display = '';
+      userDropdown.style.display = 'none';
+    }
+  }
+
+  function renderCart() {
+    const cartContainer = document.getElementById('cart-container');
+    const grandTotalContainer = document.getElementById('grand-total-container');
+    const payButton = document.getElementById('pay-button');
+    let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
+
+    if(cart.length === 0) {
+      cartContainer.innerHTML = '<p class="empty-cart">Your cart is currently empty.</p>';
+      grandTotalContainer.textContent = '';
+      payButton.style.display = 'none';
+      return;
+    }
+
+    let total = 0;
+    let html = `
+      <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Size</th>
+          <th>Quantity</th>
+          <th>Price (Unit)</th>
+          <th>Total</th>
+          <th>Action</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>`;
+      
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      html += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.size}</td>
+          <td>${item.quantity}</td>
+          <td>₹${item.price.toFixed(2)}</td>
+          <td>₹${itemTotal.toFixed(2)}</td>
+          <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+          <td><a href="checkout.html" class="buy-now-btn" tabindex="-1">Buy Now</a></td>
+        </tr>`;
+    });
+
+    html += '</tbody></table>';
+    cartContainer.innerHTML = html;
+    grandTotalContainer.textContent = `Grand Total (Pre-tax): ₹${total.toFixed(2)}`;
+    payButton.style.display = 'inline-block';
+
+    // Add event listeners for delete buttons
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    deleteButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const idx = e.target.getAttribute("data-index");
+        cart.splice(idx, 1);
+        localStorage.setItem('furiaCart', JSON.stringify(cart));
+        renderCart();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateUserUI();
+    renderCart();
+
+    document.getElementById('pay-button').addEventListener('click', () => {
+      window.location.href = "checkout.html";
+    });
+  });
+</script>
+</body>
+</html>

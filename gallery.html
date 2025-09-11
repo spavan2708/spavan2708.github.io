@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Furia | Gallery</title>
+  <style>
+    /* Same styling as about.html above plus gallery specific */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      color: #222;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #111;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      position: relative;
+    }
+    .nav-links a {
+      color: #222;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .nav-links a.active {
+      background-color: #007d7d;
+      color: #fff;
+      font-weight: 700;
+    }
+    .nav-links a:hover {
+      background-color: #f0f0f0;
+      color: #007d7d;
+      cursor: pointer;
+    }
+    .user-dropdown {
+      display:none;
+      position: relative;
+      margin-left: 1.2rem;
+      z-index: 100;
+    }
+    .user-btn {
+      background: #e6f2f2;
+      color: #007d7d;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .logout-box {
+      display: none;
+      position: absolute;
+      right: 0;
+      min-width: 116px;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.20);
+      border-radius: 8px;
+      margin-top: 6px;
+      z-index: 100;
+      padding: 0.6rem 1.2rem;
+    }
+    .logout-box button {
+      background: none;
+      color: #c0392b;
+      padding: 0;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      max-width: 900px;
+      margin: 3rem auto 5rem auto;
+      padding: 2rem 1rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+      color: #333;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    footer {
+      padding: 1.5rem 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      background: #fafafa;
+      margin-top: 5rem;
+    }
+  </style>
+  <script>
+    // Redirect to login if not authenticated
+    if (!localStorage.getItem('furiaUser') || localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = "login.html";
+    }
+  </script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Furia</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html">Cart</a>
+      <span class="user-dropdown" id="userDropdown">
+        <button class="user-btn" id="userBtn"></button>
+        <span class="logout-box" id="logoutBox">
+          <button id="logoutBtn">Log Out</button>
+        </span>
+      </span>
+    </div>
+  </nav>
+
+
+  <main>
+    <h1>Gallery</h1>
+    <div class="gallery">
+      <!-- Updated to .webp with exact names from your images folder -->
+      <img src="images/Oversized Tee.webp" alt="Oversized Tee" />
+      <img src="images/Black Half Zip Polo.webp" alt="Black Half Zip Polo" />
+      <img src="images/Revive Half Zip Sweatshirt.webp" alt="Revive Sweatshirt" />
+      <img src="images/Revive Trousers.webp" alt="Revive Trousers" />
+      <img src="images/Revive Lounge Pants.webp" alt="Revive Lounge Pants" />
+      <img src="images/Revive Cargo Joggers.webp" alt="Revive Cargo Joggers" />
+      <img src="images/Black Grey Dual Tone Twill Cap.webp" alt="Dual Tone Twill Cap" />
+      <img src="images/Classic Black Card Holder.webp" alt="Black Card Holder" />
+      <img src="images/Void Heavy Duty Tote Bag.webp" alt="Void Tote Bag" />
+    </div>
+  </main>
+
+
+  <footer>&copy; 2025 Furia. All rights reserved.</footer>
+  
+  <script>
+    function updateUserUI() {
+      const user = JSON.parse(localStorage.getItem('furiaUser') || 'null');
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+
+      const userDropdown = document.getElementById('userDropdown');
+      const userBtn = document.getElementById('userBtn');
+      const logoutBox = document.getElementById('logoutBox');
+      const signupLink = document.getElementById('signupLink');
+      const loginLink = document.getElementById('loginLink');
+
+
+      if (user && loggedIn) {
+        signupLink.style.display = 'none';
+        loginLink.style.display = 'none';
+        userDropdown.style.display = 'inline-block';
+        userBtn.textContent = user.name.split(' ')[0];
+        userBtn.onclick = (e) => {
+          e.stopPropagation();
+          logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+        };
+        document.body.addEventListener('click', () => logoutBox.style.display = 'none');
+        document.getElementById('logoutBtn').onclick = () => {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = "login.html";
+        };
+      } else {
+        signupLink.style.display = '';
+        loginLink.style.display = '';
+        userDropdown.style.display = 'none';
+      }
+    }
+
+
+    window.onload = updateUserUI;
+  </script>
+</body>
+</html>

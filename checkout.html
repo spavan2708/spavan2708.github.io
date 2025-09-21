@@ -151,7 +151,7 @@
   textarea {
     min-height: 90px;
   }
-  button.pay-btn, button.buy-btn {
+  button.pay-btn {
     background-color: #007d7d;
     color: white;
     padding: 1rem 0;
@@ -164,7 +164,7 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     margin-top: 1.5rem;
   }
-  button.pay-btn:hover, button.buy-btn:hover {
+  button.pay-btn:hover {
     background-color: #005353;
     box-shadow: 0 8px 28px rgba(0,83,83,0.6);
   }
@@ -208,25 +208,7 @@
   </nav>
   <main>
     <h1>Checkout</h1>
-
-    <!-- Product selection for Buy Now -->
-    <section style="max-width:600px; margin: 0 auto 2rem auto;">
-      <h2>Buy Now</h2>
-      <label for="sizeSelect">Select Size</label>
-      <select id="sizeSelect" required>
-        <option value="" disabled selected>Select size</option>
-        <option value="S">Small</option>
-        <option value="M">Medium</option>
-        <option value="L">Large</option>
-        <option value="XL">Extra Large</option>
-      </select>
-
-      <label for="quantityInput">Quantity</label>
-      <input type="number" id="quantityInput" min="1" value="1" required />
-
-      <button class="buy-btn" onclick="buyNow()">Buy Now</button>
-    </section>
-
+    <!-- "Buy Now" section removed as requested -->
     <table>
       <thead>
         <tr>
@@ -257,22 +239,17 @@
         </tr>
       </tfoot>
     </table>
-
     <form id="deliveryForm" autocomplete="off">
       <label for="custName">Name</label>
       <input type="text" id="custName" name="custName" required />
-
       <label for="custContact">Contact Number</label>
       <input type="tel" id="custContact" name="custContact" required pattern="[0-9+ ]{7,15}" placeholder="+91 98765 43210" />
-
       <label for="custAddress">Delivery Address</label>
       <textarea id="custAddress" name="custAddress" required></textarea>
-
       <button type="submit" class="pay-btn">Pay</button>
     </form>
   </main>
   <footer>&copy; 2025 Furia. All rights reserved.</footer>
-
 <script>
   function updateUserUI() {
     const user = JSON.parse(localStorage.getItem('furiaUser') || 'null');
@@ -302,13 +279,11 @@
       userDropdown.style.display = 'none';
     }
   }
-
   function loadOrderItems() {
     const orderItemsTbody = document.getElementById('orderItems');
     let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
     orderItemsTbody.innerHTML = '';
     let subtotal = 0;
-
     cart.forEach(item => {
       const itemTotal = item.price * item.quantity;
       subtotal += itemTotal;
@@ -322,64 +297,13 @@
         </tr>
       `;
     });
-
     const gst = subtotal * 0.18;
     const deliveryCharge = 50;
     const grandTotal = subtotal + gst + deliveryCharge;
-
     document.getElementById('subtotalAmt').textContent = '₹' + subtotal.toFixed(2);
     document.getElementById('gstAmt').textContent = '₹' + gst.toFixed(2);
     document.getElementById('grandTotalAmt').textContent = '₹' + grandTotal.toFixed(2);
   }
-
-  function buyNow() {
-    const sizeSelect = document.getElementById('sizeSelect');
-    const quantityInput = document.getElementById('quantityInput');
-
-    const size = sizeSelect.value;
-    const quantity = parseInt(quantityInput.value);
-
-    if (!size) {
-      alert('Please select a size.');
-      return;
-    }
-    if (!quantity || quantity < 1) {
-      alert('Please enter a valid quantity.');
-      return;
-    }
-
-    const item = {
-      id: 123,  // unique id for this product
-      name: 'Furia Classic T-Shirt',
-      size: size,
-      price: 799,
-      quantity: quantity,
-    };
-
-    let cart = JSON.parse(localStorage.getItem('furiaCart')) || [];
-
-    // Check if item with same id & size already exists in cart
-    const existingItemIndex = cart.findIndex(
-      cartItem => cartItem.id === item.id && cartItem.size === item.size
-    );
-
-    if (existingItemIndex > -1) {
-      cart[existingItemIndex].quantity += item.quantity;
-    } else {
-      cart.push(item);
-    }
-
-    localStorage.setItem('furiaCart', JSON.stringify(cart));
-
-    loadOrderItems();
-
-    alert('Item added to cart!');
-
-    // Optionally clear selection (not required)
-    // sizeSelect.value = '';
-    // quantityInput.value = 1;
-  }
-
   window.onload = function() {
     updateUserUI();
     loadOrderItems();
